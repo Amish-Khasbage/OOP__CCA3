@@ -1,135 +1,117 @@
-// Experiment 6: Inheritance
+// Experiment 7(a): Function Overloading (Area of Lab and Classroom)
 
 #include <iostream>
-#include <string>
 using namespace std;
 
-// (a) Multilevel Inheritance
-class Person {
-public:
-    string name;
-    void getName() {
-        cout << "Enter name: ";
-        getline(cin, name);
-    }
-};
-class Student : public Person {
-public:
-    int roll;
-    void getRoll() {
-        cout << "Enter roll number: ";
-        cin >> roll;
-        cin.ignore();
-    }
-};
-class Marks : public Student {
-public:
-    float score;
-    void getMarks() {
-        cout << "Enter marks: ";
-        cin >> score;
-    }
-    void display() {
-        cout << "\nName: " << name << "\nRoll: " << roll << "\nMarks: " << score << endl;
-    }
-};
+float area(float length, float breadth) {
+    return length * breadth;
+}
+
+float area(float side) {
+    return side * side;
+}
+
 int main() {
-    Marks m;
-    m.getName();
-    m.getRoll();
-    m.getMarks();
-    m.display();
+    float l, b, s;
+    cout << "Enter length and breadth of laboratory: ";
+    cin >> l >> b;
+    cout << "Enter side of classroom: ";
+    cin >> s;
+
+    cout << "Area of laboratory: " << area(l, b) << endl;
+    cout << "Area of classroom: " << area(s) << endl;
     return 0;
 }
 
-// (b) Multiple Inheritance
+// Experiment 7(b): Function Overloading (Sum of Values)
+
 #include <iostream>
-#include <string>
 using namespace std;
 
-class A {
-public:
-    int x;
-    void getX() { cout << "Enter X: "; cin >> x; }
-};
-class B {
-public:
-    int y;
-    void getY() { cout << "Enter Y: "; cin >> y; }
-};
-class C : public A, public B {
-public:
-    void sum() { cout << "Sum = " << x + y << endl; }
-};
+float sum(float a, float b, float c, float d, float e) {
+    return a + b + c + d + e;
+}
+
+int sum(int arr[], int n) {
+    int total = 0;
+    for (int i = 0; i < n; i++)
+        total += arr[i];
+    return total;
+}
+
 int main2() {
-    C obj;
-    obj.getX();
-    obj.getY();
-    obj.sum();
+    float a, b, c, d, e;
+    cout << "Enter 5 float values: ";
+    cin >> a >> b >> c >> d >> e;
+    cout << "Sum of floats: " << sum(a, b, c, d, e) << endl;
+
+    int arr[10];
+    cout << "Enter 10 integers: ";
+    for (int i = 0; i < 10; i++) cin >> arr[i];
+    cout << "Sum of integers: " << sum(arr, 10) << endl;
+
     return 0;
 }
 
-// (c) Hierarchical Inheritance
+// Experiment 7(c): Unary Operator Overloading (-)
+
 #include <iostream>
 using namespace std;
 
-class Shape {
+class Number {
+    int num;
 public:
-    void msg() { cout << "This is a shape.\n"; }
+    void accept() { cout << "Enter number: "; cin >> num; }
+    void operator-() { num = -num; }
+    void display() { cout << "Value: " << num << endl; }
 };
-class Circle : public Shape {
-public:
-    void show() { cout << "Drawing a circle.\n"; }
-};
-class Square : public Shape {
-public:
-    void show() { cout << "Drawing a square.\n"; }
-};
+
 int main3() {
-    Circle c;
-    Square s;
-    c.msg(); c.show();
-    s.msg(); s.show();
+    Number n;
+    n.accept();
+    -n;
+    n.display();
     return 0;
 }
 
-// (d) Hybrid Inheritance
+// Experiment 7(d): Unary Operator Overloading (++ Pre/Post)
+
 #include <iostream>
 using namespace std;
 
-class A1 { public: void showA() { cout << "Class A\n"; } };
-class B1 : public A1 { public: void showB() { cout << "Class B\n"; } };
-class C1 { public: void showC() { cout << "Class C\n"; } };
-class D1 : public B1, public C1 { public: void showD() { cout << "Class D (Hybrid)\n"; } };
+class Counter {
+    int count;
+public:
+    Counter(int c = 0) { count = c; }
+
+    Counter operator++() {
+        ++count;
+        return *this;
+    }
+
+    Counter operator++(int) {
+        Counter temp = *this;
+        count++;
+        return temp;
+    }
+
+    void display() {
+        cout << "Count = " << count << endl;
+    }
+};
 
 int main4() {
-    D1 d;
-    d.showA();
-    d.showB();
-    d.showC();
-    d.showD();
-    return 0;
-}
+    Counter c1(5);
+    cout << "Initial: ";
+    c1.display();
 
-// (e) Virtual Base Class
-#include <iostream>
-using namespace std;
+    ++c1;
+    cout << "After pre-increment: ";
+    c1.display();
 
-class Base {
-public:
-    int x;
-    void input() { cout << "Enter value of x: "; cin >> x; }
-};
-class Derived1 : virtual public Base {};
-class Derived2 : virtual public Base {};
-class Final : public Derived1, public Derived2 {
-public:
-    void show() { cout << "Value of x (from virtual base) = " << x << endl; }
-};
+    c1++;
+    cout << "After post-increment: ";
+    c1.display();
 
-int main5() {
-    Final obj;
-    obj.input();
-    obj.show();
     return 0;
 }
